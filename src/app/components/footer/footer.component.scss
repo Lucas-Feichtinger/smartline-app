@@ -1,0 +1,32 @@
+.content {
+   &.footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--secondary-light-color);
+      padding: 20px 0;
+      font-size: 14px;
+      color: var(--secondary-text-color);
+
+      span {
+         margin: 0 10px;
+
+         &:first-child {
+            margin-left: 0;
+         }
+
+         &:last-child {
+            margin-right: 0;
+         }
+
+         a {
+            color: var(--secondary-text-color);
+            text-decoration: none;
+
+            &:hover {
+               text-decoration: underline;
+            }
+         }
+      }
+   }
+}

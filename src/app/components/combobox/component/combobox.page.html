@@ -1,0 +1,56 @@
+<div
+   class="combobox"
+   (focusin)="onFocus()"
+   (focusout)="onFocusout()">
+   <div class="search-bar">
+      <div class="search-box">
+         <div class="input-content">
+            <label
+               *ngIf="Label.length > 0"
+               for="input"
+               >{{ Label }}</label
+            >
+            <i
+               *ngIf="!Disabled"
+               [class.open-list]="ClearSelection"
+               [class.open-list-left]="!ClearSelection"
+               class="open-list fas fa-sort-down"></i>
+            <div class="input-container">
+               <input
+                  class="main-input"
+                  [class.button-disabled]="!ClearSelection"
+                  [class.button-enabled]="ClearSelection"
+                  (iconClick)="clearSelectedItem()"
+                  (valueChange)="searchObjectForInput($event)"
+                  [value]="Value()"
+                  [placeholder]="Placeholder"
+                  [disabled]="Disabled"
+                  autocomplete="nope" />
+               <button
+                  class="p-inputgroup-addon"
+                  (click)="clearSelectedItem()">
+                  <i class="fas fa-xmark"></i>
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div
+      [class.dropup-menu]="DropdownDirection==='up'"
+      class="dropdown-menu"
+      *ngIf="DropdownMenuActive">
+      <ul class="dropdown-list">
+         <li
+            *ngFor="let listitem of DisplayableDataset; let irow = index"
+            [id]="listitem.Id"
+            (click)="selectDropdownItem(listitem)"
+            (mousedown)="onMenuMouseDown()"
+            [class.selected-item]="listitem === SelectedItem"
+            [class.hovered-item]="listitem === HoveredItem">
+            <ng-container
+               *ngTemplateOutlet="ComboboxItem.template; context: { $implicit: listitem.ItemData, irow: listitem }"></ng-container>
+         </li>
+      </ul>
+   </div>
+</div>

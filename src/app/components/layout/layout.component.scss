@@ -1,0 +1,74 @@
+:host {
+   .container {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 0 0;
+      grid-auto-flow: column;
+      grid-template-areas: 'navbar header' 'navbar content' 'navbar footer';
+
+      .content {
+         max-height: 100%;
+         max-width: 100%;
+         height: 100%;
+         width: 100%;
+         overflow: auto;
+         grid-area: content;
+         padding: 1rem;
+         border-bottom: 1px solid #0002;
+
+         ::ng-deep {
+            > * {
+               display: flex;
+               flex-direction: column;
+               flex-wrap: nowrap;
+               flex-grow: 1;
+               min-height: 100%;
+            }
+         }
+
+         router-outlet {
+            position: absolute;
+            min-height: 0 !important;
+            height: 0 !important;
+            max-height: 0 !important;
+         }
+      }
+
+      .header {
+         grid-area: header;
+      }
+
+      .navbar {
+         grid-area: navbar;
+      }
+
+      .footer {
+         float: bottom;
+         grid-area: footer;
+      }
+   }
+
+   .logout-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      z-index: 1000; /* Higher z-index to ensure the popup is above other content */
+   }
+   /* Styling for the overlay */
+   .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(167, 167, 167, 0.349);
+      z-index: 999; /* Z-index lower than the popup container, but higher than the content */
+   }
+}
