@@ -1,9 +1,13 @@
 html {
+   --ligt-blue: #c7deeb;
+   --form-error: #da4734;
+
    --primary-text-color: #fff;
    --secondary-text-color: #5f5f5f;
 
    --primary-button-color: #3d84a8;
    --secondary-button-color: #367696;
+   --button-disabled: rgb(0, 104, 156);
    --button-shadow: 0 0 1px 1px #4899c2d8;
 
    --primary-dark-color: #333;
@@ -12,4 +16,5 @@ html {
 
    --primary-light-color: #ffffff;
    --secondary-light-color: #f4f4f4;
+   --tricary-light-color: #e0e0e0;
 }

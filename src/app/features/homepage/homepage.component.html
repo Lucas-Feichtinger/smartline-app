@@ -1,13 +1,65 @@
 <section class="hero">
-   <div class="hero__content">
-      <h2 class="hero__title">Your Trusted Partner in Assembly Solutions</h2>
-      <p class="hero__text">
+   <div class="hero-content">
+      <h2 class="hero-title">Your Trusted Partner in Assembly Solutions</h2>
+      <p class="hero-text">
          Delivering excellence in assembly services for every industry.
       </p>
-      <a
-         routerLink="/services"
-         class="btn btn-primary"
-         >Learn More</a
-      >
+      <div class="cbox">
+         <form
+            class="login-form"
+            novalidate
+            [formGroup]="LoginForm"
+            (ngSubmit)="onLogin()">
+            <!-- INPUT: USERID -->
+            <h3>Log in to Your Account</h3>
+
+            <label for="userid">Username:</label>
+            <input
+               id="userid"
+               type="text"
+               placeholder="User ID"
+               [class.form-error]="
+                  LoginForm.get('userId')?.hasError('minlength')
+               "
+               class="main-input"
+               formControlName="userId" />
+            <!-- ERROR: USERID -->
+            <p
+               class="form-error-text"
+               *ngIf="LoginForm.get('userId')?.hasError('minlength')">
+               * must contain at least 5 characters
+            </p>
+            <!-- INPUT: PASSWORD -->
+            <label for="password">Password:</label>
+            <input
+               id="password"
+               type="password"
+               placeholder="Password"
+               [class.form-error]="
+                  LoginForm.get('password')?.hasError('minlength') ||
+                  LoginForm.get('password')?.hasError('pattern')
+               "
+               class="main-input"
+               formControlName="password" />
+            <!-- ERROR: PASSWORD -->
+            <p
+               class="form-error-text"
+               *ngIf="LoginForm.get('password')?.hasError('minlength')">
+               * must contain at least 6 characters
+            </p>
+            <p
+               class="form-error-text"
+               *ngIf="LoginForm.get('password')?.hasError('pattern')">
+               * must contain at least 1 upper case sharacter
+            </p>
+
+            <button
+               type="submit"
+               class="main-btn"
+               [disabled]="!LoginForm.valid">
+               Login
+            </button>
+         </form>
+      </div>
    </div>
 </section>

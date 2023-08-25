@@ -20,14 +20,19 @@ export class OrderService {
 
    constructor() {}
 
+   /**
+    * @param item The item to be added to production.
+    */
    public async addItemToProduction(item: ProductionItemIFace) {
       const currentArray = this.productionItems$.getValue()
 
       // Check if the item already exists in the array
       if (!currentArray.some((existingItem) => existingItem.ID === item.ID)) {
          item.Amount = 1
+         // Add new item to array
          const updatedArray = [...currentArray, item]
 
+         // Generate new Order if the array was empty
          if (currentArray.length <= 0) {
             this.order$.next({
                ID: (await uf_idGenerator({})).ID,
@@ -35,6 +40,7 @@ export class OrderService {
             })
          }
 
+         // Update Observables ** ORDER is IMPORTANT **
          this.order$.getValue()?.Workpieces?.next(updatedArray)
          this.productionItems$.next(updatedArray)
          this.selectWorkpiece(item)
@@ -43,6 +49,9 @@ export class OrderService {
       }
    }
 
+   /**
+    * @param item The item to be removed from production.
+    */
    removeItemFromProdunction(item: ProductionItemIFace) {
       const updatedArticles = this.productionItems$
          .getValue()
@@ -51,14 +60,39 @@ export class OrderService {
       this.productionItems$.next(updatedArticles)
    }
 
+   /**
+    * Clears the production items.
+    */
    clearProduction() {
       this.productionItems$.next([])
    }
 
+   /**
+    * Clears the orders, including workpiece and production items.
+    */
+   clearOrders() {
+      this.clearWorkpiece()
+      this.clearProduction()
+      this.order$.next(null)
+   }
+
+   /**
+    * Clears the selected workpiece.
+    */
+   clearWorkpiece() {
+      this.selectedWorkpiece$.next(null)
+   }
+
+   /**
+    * @param workpiece The workpiece to be selected.
+    */
    selectWorkpiece(workpiece: ProductionItemIFace) {
       this.selectedWorkpiece$.next(workpiece)
    }
 
+   /**
+    * Selects the previous workpiece.
+    */
    lastWorkpiece() {
       const currentIndex = this.getIndex()
 
@@ -69,6 +103,9 @@ export class OrderService {
       }
    }
 
+   /**
+    * Selects the next workpiece.
+    */
    nextWorkpiece() {
       const currentIndex = this.getIndex()
 
@@ -79,6 +116,9 @@ export class OrderService {
       }
    }
 
+   /**
+    * @returns The index of the selected workpiece.
+    */
    public getIndex(): number {
       const selectedWorkpiece = this.selectedWorkpiece$.getValue()
       if (!selectedWorkpiece) {

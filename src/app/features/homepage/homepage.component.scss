@@ -6,12 +6,12 @@
    padding: 4rem 0;
 }
 
-.hero__title {
+.hero-title {
    font-size: 2.5rem;
    margin-bottom: 1rem;
 }
 
-.hero__text {
+.hero-text {
    font-size: 1.25rem;
    margin-bottom: 2rem;
 }
@@ -34,4 +34,36 @@
 
 .btn-primary {
    background-color: #007bff;
+}
+
+.login-form {
+   background-color: var(--ligt-blue);
+   padding: 1.4rem;
+   width: 50%;
+   border-radius: 0.3rem;
+
+   p {
+      color: var(--form-error);
+   }
+
+   label {
+      font-weight: 600;
+      text-align: left;
+      display: block;
+      margin-top: 0.2rem;
+   }
+
+   h3 {
+   }
+
+   .form-error {
+      box-shadow: 0 0 1px 1px var(--form-error);
+   }
+
+   .form-error-text {
+      font-size: 0.85rem;
+      margin: 0;
+      text-align: left;
+      display: block;
+   }
 }

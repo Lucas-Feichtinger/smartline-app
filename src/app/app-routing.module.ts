@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core'
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
 import { LayoutComponent } from './components/layout/layout.component'
-import {
-   HomepageComponent,
-   OrderItemComponent,
-   ProductionManagementComponent,
-} from './features'
+import { HomepageComponent, ProductionManagementComponent } from './features'
 
 const routes: Routes = [
    {
@@ -36,12 +32,7 @@ const routes: Routes = [
          },
          {
             path: 'order-item',
-            // canActivate: [],
-            component: OrderItemComponent,
-            // loadChildren: () =>
-            //    import('./features').then(
-            //       (m) => m.ProductionManagementComponent
-            //    ),
+            loadChildren: () => import('./features').then((m) => m.OrderRoutes),
          },
       ],
    },

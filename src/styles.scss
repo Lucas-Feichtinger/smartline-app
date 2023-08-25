@@ -2,6 +2,7 @@
 @import url('./assets/font-awesome/css/regular.min.css');
 @import url('./assets/font-awesome/css/solid.min.css');
 @import url('./styles/varables.scss');
+@import url('./styles/box.scss');
 
 :root {
    font-size: 14px;
@@ -33,13 +34,18 @@ body {
    border: 1px solid var(--secondary-button-color);
 }
 
-.main-btn:hover {
+.main-btn:hover:enabled {
    background-color: var(--secondary-button-color);
    cursor: pointer;
 }
 
-.main-btn:focus {
+.main-btn:focus:enabled {
    box-shadow: var(--button-shadow);
+}
+
+.main-btn:disabled {
+   cursor: not-allowed;
+   background-color: var(--button-disabled);
 }
 
 .small {
@@ -67,7 +73,6 @@ body {
 }
 
 .main-input:focus {
-   box-shadow: 0 0 1px 1px #4899c2d8;
    outline: none;
 }
 
@@ -77,6 +82,11 @@ body {
 }
 
 .checkbox {
-   transform: scale(1.3);
+   transform: scale(1.4);
    width: fit-content;
+}
+
+textarea {
+   resize: none;
+   height: 4rem;
 }

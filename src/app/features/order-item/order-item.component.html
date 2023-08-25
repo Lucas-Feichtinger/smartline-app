@@ -8,7 +8,7 @@
                (onItemSelect)="selectWorkpieceCB($event)"
                (onDataRequest)="requestWorkpieceCB($event)"
                (onClear)="clearWorkpieceCB()"
-               [value]="Workpiece()"
+               [value]="WorkpieceValue()"
                [clearSelection]="true"
                placeholder="Select workpiece">
                <ng-template
@@ -33,89 +33,159 @@
       <div
          class="order-tab"
          *ngIf="order$ | async as Order">
-         <b>Order: </b>{{ Order.ID }}
+         <b>Order ID: </b>{{ Order.ID }}
 
-         <div class="order-details">
-            <div class="order-item">
-               <div class="order-details-form">
-                  <label for="order-address">Order Address</label>
-                  <input
-                     name="order-address"
-                     type="text"
-                     class="main-input"
-                     [(ngModel)]="Order.OrderAddress" />
+         <div class="vbox">
+            <div class="vbox">
+               <div class="hbox">
+                  <div class="box-size-6">
+                     <label for="order-address">City</label>
+                     <input
+                        id="order-address"
+                        type="text"
+                        class="main-input"
+                        [(ngModel)]="Order.OrderAddress" />
+                  </div>
 
-                  <label for="order-plz">PLZ</label>
-                  <input
-                     name="order-plz"
-                     type="text"
-                     class="main-input"
-                     [(ngModel)]="Order.OrderPLZ" />
-
-                  <label for="order-street">Order Street</label>
-                  <input
-                     name="order-street"
-                     type="text"
-                     class="main-input"
-                     [(ngModel)]="Order.OrderStreet" />
-
-                  <label for="order-house">Order House</label>
-                  <input
-                     name="order-house"
-                     type="text"
-                     class="main-input"
-                     [(ngModel)]="Order.OrderHouse" />
-
-                  <label for="delivery-date">Delivery Date</label>
-                  <input
-                     name="delivery-date"
-                     type="date"
-                     class="main-input"
-                     [(ngModel)]="Order.DeliveryDate" />
-
-                  <label for="priority">Priority</label>
-                  <input
-                     name="priority"
-                     type="checkbox"
-                     class="main-input checkbox"
-                     [(ngModel)]="Order.Priority" />
+                  <div class="box-size-6">
+                     <label for="order-plz">PLZ</label>
+                     <input
+                        id="order-plz"
+                        type="text"
+                        [numbers-only]="6"
+                        class="main-input"
+                        [(ngModel)]="Order.OrderPLZ" />
+                  </div>
                </div>
-            </div>
-            <div
-               class="order-name"
-               *ngIf="selectedWorkpiece$ | async as Workpiece">
-               <div class="workpiece-switch">
-                  <button
-                     class="main-btn small"
-                     (click)="orderSer.lastWorkpiece()"
-                     *ngIf="
-                        (enableSwitching$() | async) === 2 ||
-                        (enableSwitching$() | async) === 3
-                     ">
-                     <i class="fa-solid fa-arrow-left"></i>
-                  </button>
-                  <span
-                     ><b>{{ Workpiece.Name }}</b>
-                  </span>
-                  <button
-                     class="main-btn small"
-                     (click)="orderSer.nextWorkpiece()"
-                     *ngIf="
-                        (enableSwitching$() | async) === 1 ||
-                        (enableSwitching$() | async) === 3
-                     ">
-                     <i class="fa-solid fa-arrow-right"></i>
-                  </button>
+
+               <div class="hbox">
+                  <div class="box-size-6">
+                     <label for="order-street">Street</label>
+                     <input
+                        id="order-street"
+                        type="text"
+                        class="main-input"
+                        [(ngModel)]="Order.OrderStreet" />
+                  </div>
+
+                  <div class="box-size-6">
+                     <label for="order-house">House Nr.</label>
+                     <input
+                        id="order-house"
+                        type="text"
+                        class="main-input"
+                        [(ngModel)]="Order.OrderHouse" />
+                  </div>
                </div>
-               <br />
-               <label for="amount">Amount</label>
-               <input
-                  name="amount"
-                  type="number"
-                  class="main-input numbers-only"
-                  [(ngModel)]="Workpiece.Amount" />
+
+               <div class="hbox">
+                  <div class="box-size-6">
+                     <label for="delivery-date">Delivery Date</label>
+                     <input
+                        id="delivery-date"
+                        type="date"
+                        class="main-input"
+                        [(ngModel)]="Order.DeliveryDate" />
+                  </div>
+                  <div class="box-size-6 cbox">
+                     <label for="priority">Priority</label>
+                     <input
+                        id="priority"
+                        type="checkbox"
+                        class="main-input checkbox"
+                        [(ngModel)]="Order.Priority" />
+                  </div>
+               </div>
+               <div *ngIf="selectedWorkpiece$ | async as Workpiece">
+                  <div class="workpiece-switch vbox box-gap-0">
+                     <div class="hbox box-vcenter box-space-around">
+                        <div>
+                           <button
+                              class="main-btn small"
+                              (click)="orderSer.lastWorkpiece()"
+                              *ngIf="
+                                 (switchDirection$() | async) === 2 ||
+                                 (switchDirection$() | async) === 3
+                              ">
+                              <i class="fa-solid fa-arrow-left"></i>
+                           </button>
+                        </div>
+                        <span
+                           ><b>{{ Workpiece.Name }}</b>
+                        </span>
+                        <div>
+                           <button
+                              class="main-btn small"
+                              (click)="orderSer.nextWorkpiece()"
+                              *ngIf="
+                                 (switchDirection$() | async) === 1 ||
+                                 (switchDirection$() | async) === 3
+                              ">
+                              <i class="fa-solid fa-arrow-right"></i>
+                           </button>
+                        </div>
+                     </div>
+
+                     <span>{{ WorkpieceAmount$() | async }}</span>
+                  </div>
+                  <br />
+
+                  <div class="hbox">
+                     <div class="box-size-6">
+                        <label for="amount">Amount</label>
+                        <input
+                           id="amount"
+                           type="number"
+                           class="main-input numbers-only"
+                           [(ngModel)]="Workpiece.Amount" />
+                     </div>
+
+                     <div class="box-size-6">
+                        <label for="color">Color</label>
+                        <input
+                           id="color"
+                           class="main-input numbers-only"
+                           [(ngModel)]="Workpiece.Color" />
+                     </div>
+                  </div>
+
+                  <div class="hbox">
+                     <div class="box-size-6">
+                        <label for="packaging">Packaging</label>
+                        <input
+                           id="packaging"
+                           class="main-input numbers-only"
+                           [(ngModel)]="Workpiece.Packaging" />
+                     </div>
+
+                     <div class="box-size-6">
+                        <label for="material">Material</label>
+                        <input
+                           id="material"
+                           class="main-input numbers-only"
+                           [(ngModel)]="Workpiece.Material" />
+                     </div>
+                  </div>
+
+                  <div class="hbox">
+                     <div class="box-size-6">
+                        <label for="amount">Instructions</label>
+                        <textarea
+                           id="amount"
+                           class="main-input numbers-only"
+                           [(ngModel)]="Workpiece.Instructions">
+                        </textarea>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
+
+         <button
+            class="main-btn"
+            (click)="createOrder()">
+            Create Order
+         </button>
       </div>
    </div>
 </div>
