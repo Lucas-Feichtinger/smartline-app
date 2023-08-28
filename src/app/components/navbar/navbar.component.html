@@ -6,16 +6,18 @@
          routerLinkActive="active-link">
          <a>Home</a>
       </li>
+      <!-- "Greater than" opperand is not working here -->
       <li
+         *ngIf="(Allowance$() | async) === 2"
          routerLink="/production-management"
          routerLinkActive="active-link">
          <a>Production Management</a>
       </li>
       <li
+         *ngIf="(Allowance$() | async) === 2 || (Allowance$() | async) === 1"
          routerLink="/order-item"
          routerLinkActive="active-link">
          <a>Order Item</a>
       </li>
-      <!-- Add more menu items as needed -->
    </ul>
 </nav>

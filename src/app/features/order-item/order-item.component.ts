@@ -10,7 +10,7 @@ import {
 import { NumberDirective, ProductionItemIFace } from '../shared'
 import { MockupData } from './moqup-data/moq-data.const'
 import { OrderService } from './data'
-import { firstValueFrom, map, tap } from 'rxjs'
+import { firstValueFrom, map } from 'rxjs'
 import { CacheService } from 'src/app/services/cache/cache.service'
 import { OrderInformationIFace } from '../shared/interfaces/order-information.iface'
 import { OrderStoreService } from '../shared/data/order-storage.service'

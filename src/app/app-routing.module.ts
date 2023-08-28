@@ -16,23 +16,20 @@ const routes: Routes = [
       children: [
          {
             path: 'homepage',
-            // canActivate: [],
-            component: HomepageComponent,
-            // loadChildren: () =>
-            //    import('./features').then((m) => m.HomepageComponent),
+            loadComponent: () =>
+               import('./features').then((mod) => mod.HomepageComponent),
          },
          {
             path: 'production-management',
-            // canActivate: [],
-            component: ProductionManagementComponent,
-            // loadChildren: () =>
-            //    import('./features').then(
-            //       (m) => m.ProductionManagementComponent
-            //    ),
+            loadComponent: () =>
+               import('./features').then(
+                  (mod) => mod.ProductionManagementComponent
+               ),
          },
          {
             path: 'order-item',
-            loadChildren: () => import('./features').then((m) => m.OrderRoutes),
+            loadComponent: () =>
+               import('./features').then((mod) => mod.OrderItemComponent),
          },
       ],
    },

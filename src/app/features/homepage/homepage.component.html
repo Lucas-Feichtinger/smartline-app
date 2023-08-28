@@ -4,7 +4,9 @@
       <p class="hero-text">
          Delivering excellence in assembly services for every industry.
       </p>
-      <div class="cbox">
+      <div
+         class="cbox"
+         *ngIf="!LoginState()">
          <form
             class="login-form"
             novalidate
@@ -55,10 +57,11 @@
 
             <button
                type="submit"
-               class="main-btn"
-               [disabled]="!LoginForm.valid">
+               class="main-btn">
                Login
             </button>
+
+            <loading-circle *ngIf="AwaitingLogin()"> </loading-circle>
          </form>
       </div>
    </div>

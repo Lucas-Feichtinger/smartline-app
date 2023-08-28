@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core'
+import { UserService } from './services'
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+   selector: 'app-root',
+   templateUrl: './app.component.html',
+   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'assembly-line-management';
+   public userSer = inject(UserService)
+
+   async ngOnInit() {
+      await this.userSer.getUser()
+   }
 }

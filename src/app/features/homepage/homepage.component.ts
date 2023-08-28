@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core'
+import { Component, effect, inject, signal, untracked } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterLinkWithHref, RouterOutlet } from '@angular/router'
 import { Title } from '@angular/platform-browser'
@@ -8,8 +8,9 @@ import {
    ReactiveFormsModule,
    Validators,
 } from '@angular/forms'
-import { FakeBackendService } from 'src/app/services/fake-backend/fake-backend.service'
 import { UserIFace } from 'src/app/interfaces'
+import { LoadingCircleComponent } from 'src/app/components/loading-circle'
+import { UserService, FakeBackendService } from 'src/app/services'
 
 @Component({
    standalone: true,
@@ -19,6 +20,7 @@ import { UserIFace } from 'src/app/interfaces'
       RouterOutlet,
       RouterLinkWithHref,
       ReactiveFormsModule,
+      LoadingCircleComponent,
    ],
    selector: 'app-homepage',
    templateUrl: './homepage.component.html',
@@ -28,26 +30,43 @@ export class HomepageComponent {
    private title = inject(Title)
    private formBuilder = inject(FormBuilder)
    private fakeBackendSer = inject(FakeBackendService)
+   private userSer = inject(UserService)
 
-   LoginForm = this.formBuilder.group({
-      userId: ['', [Validators.required, Validators.minLength(5)]],
-      password: [
-         '',
-         [
-            Validators.required,
-            Validators.minLength(5),
-            Validators.pattern(/[A-ZÄÖÜ]/),
+   public LoginState = signal(false)
+   public AwaitingLogin = signal(false)
+
+   LoginForm = this.formBuilder.group(
+      {
+         userId: ['', [Validators.required, Validators.minLength(5)]],
+         password: [
+            '',
+            [
+               Validators.required,
+               Validators.minLength(5),
+               Validators.pattern(/[A-ZÄÖÜ]/),
+            ],
          ],
-      ],
-   })
+      },
+      {
+         updateOn: 'submit',
+      }
+   )
 
    ngOnInit() {
       this.title.setTitle('SmartLine - Home')
+      this.LoginState.set(this.userSer.getLoginState())
    }
 
-   constructor() {}
+   constructor() {
+      effect(() => {
+         untracked(() => this.AwaitingLogin())
+
+         this.LoginForm
+      })
+   }
 
    public async onLogin() {
+      this.AwaitingLogin.set(true)
       const { userId, password } = this.LoginForm.value
 
       if (!userId || !password) {
@@ -61,6 +80,8 @@ export class HomepageComponent {
 
       const user: UserIFace = resp ? resp : ({} as UserIFace)
 
-      console.log(user)
+      this.userSer.setUser(user)
+      this.AwaitingLogin.set(false)
+      this.LoginState.set(true)
    }
 }
