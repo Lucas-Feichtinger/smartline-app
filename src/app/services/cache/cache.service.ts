@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core'
    providedIn: 'root',
 })
 export class CacheService {
-   constructor() {}
-
    /**
     * String in den SessionStorage schreiben
     * @param {string} key Zu schreibender Schlüssel
@@ -29,13 +27,13 @@ export class CacheService {
    public getString(key: string): Promise<string | null> {
       if (!sessionStorage) {
          console.log('sessionStorage unavailable')
-         return new Promise<string | null>((resolve, reject) => {
+         return new Promise<string | null>((resolve) => {
             resolve(null)
          })
       }
       // let val = sessionStorage.getItem(key)
       const val = sessionStorage.getItem(key)
-      return new Promise<string | null>((resolve, reject) => {
+      return new Promise<string | null>((resolve) => {
          resolve(val)
       })
    }
@@ -69,7 +67,9 @@ export class CacheService {
       try {
          const str = JSON.stringify(val)
          this.setString(key, str)
-      } catch (ex) {}
+      } catch (ex) {
+         console.error(ex)
+      }
    }
 
    /**
@@ -151,7 +151,9 @@ export class CacheService {
       try {
          const str = JSON.stringify(val)
          this.setStringLocal(key, str)
-      } catch (ex) {}
+      } catch (ex) {
+         console.error(ex)
+      }
    }
 
    /**

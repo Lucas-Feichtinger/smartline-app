@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { UserService } from './services'
 
 @Component({
@@ -6,7 +6,7 @@ import { UserService } from './services'
    templateUrl: './app.component.html',
    styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
    public userSer = inject(UserService)
 
    async ngOnInit() {

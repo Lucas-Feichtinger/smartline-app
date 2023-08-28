@@ -30,7 +30,7 @@ import { NgTemplateOutlet, CommonModule } from '@angular/common'
 import { uf_searchObject } from 'src/app/util-functions/search-object/search-object.uf'
 
 @Component({
-   selector: 'combobox',
+   selector: 'app-combobox',
    templateUrl: './combobox.page.html',
    styleUrls: ['./combobox.page.scss'],
    standalone: true,
@@ -40,11 +40,11 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
    public IsMenuInteracting = false
    // Provides limitation for certain functions only for the current Comboboxes menu
    // if multiple Comboboxes are on one site
-   public DropdownMenuActive: boolean = false
+   public DropdownMenuActive = false
    // Direction the dropdown menu displays
    public DropdownDirection: 'up' | 'down' = 'down'
    // Return orientation to the previous value if nothing was selected
-   public PreviousValue: string = ''
+   public PreviousValue = ''
    // Important for stateless searching
    public DisplayableDataset: ComboboxItemIFace<T>[] = []
    // Highlights the selected item Via
@@ -55,7 +55,8 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
    public Context = new ComboboxContext<T>()
    private ContextSubscription: Subscription = new Subscription()
    private ContextCommandSubscription: Subscription = new Subscription()
-   @Input('context') set setContext(context: ComboboxContext<T>) {
+   // Bindings
+   @Input() set context(context: ComboboxContext<T>) {
       this.ContextSubscription.unsubscribe()
       this.ContextCommandSubscription.unsubscribe()
       this.Context = context
@@ -75,40 +76,40 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       }, 0)
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   public Label: string = ''
-   @Input('label') set setLabel(label: string) {
+   public Label = ''
+   @Input() set label(label: string) {
       this.Label = label
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   public ClearSelection: boolean = true
-   @Input('clearSelection') set setClearSelection(clearSelection: boolean) {
+   public ClearSelection = true
+   @Input() set clearSelection(clearSelection: boolean) {
       this.ClearSelection = clearSelection
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   public Placeholder: string = ''
-   @Input('placeholder') set setPlaceholder(placeholder: string) {
+   public Placeholder = ''
+   @Input() set placeholder(placeholder: string) {
       this.Placeholder = placeholder
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    public Value = signal('')
-   @Input('value') set setValue(value: string) {
+   @Input() set value(value: string) {
       this.Value.set(value)
    }
 
-   public Disabled: boolean = false
-   @Input('disabled') set setDisabled(disabled: boolean) {
+   public Disabled = false
+   @Input() set disabled(disabled: boolean) {
       this.Disabled = disabled
       if (disabled) {
          this.ClearSelection = false
       }
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Input('dataset') set setDataset(data: ComboboxItemIFace<T>[]) {
+   @Input() set dataset(data: ComboboxItemIFace<T>[]) {
       this.Context.Dataset = data
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    public SelectedItem: ComboboxItemIFace<T> | null = null
-   @Input('setItem') set setSelectedItem(selectedItem: T) {
+   @Input() set setItem(selectedItem: T) {
       // Timeout to finish loading DisplayableDataset so the Selected item can be found
       setTimeout(() => {
          this.DisplayableDataset.find((item) => {
@@ -119,13 +120,11 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       }, 0)
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output('onDataRequest') OnDataRequest = new EventEmitter<
-      ComboboxDataRequestIFace<T>
-   >()
+   @Output() onDataRequest = new EventEmitter<ComboboxDataRequestIFace<T>>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output('onItemSelect') OnItemSelect = new EventEmitter<T>()
+   @Output() onItemSelect = new EventEmitter<T>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output('onClear') OnClear = new EventEmitter<void>()
+   @Output() OnClear = new EventEmitter<void>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    @ContentChild(ComboboxItemDirective) ComboboxItem!: ComboboxItemDirective
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -157,14 +156,14 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       }
    }
 
-   public CurrentListItem: number = -1
+   public CurrentListItem = -1
    @HostListener('document:keydown.arrowdown', ['$event'])
    onKeydown(event: any) {
       if (!this.DropdownMenuActive) return
       // Prevent the default arrow-down behavior (e.g. scrolling the page)
       event.preventDefault()
 
-      let elements = this.els.map(({ Id, El }) => ({ Id, El }))
+      const elements = this.els.map(({ Id, El }) => ({ Id, El }))
 
       setTimeout(() => {
          if (this.CurrentListItem < this.DisplayableDataset.length - 1) {
@@ -172,10 +171,10 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
             const listItem = this.DisplayableDataset[this.CurrentListItem]
             this.HoveredItem = listItem
             // Scroll element into view
-            let telem = elements.find((el) => el.Id === this.CurrentListItem)
+            const telem = elements.find((el) => el.Id === this.CurrentListItem)
 
             if (telem) {
-               let htmlEl: HTMLElement = telem.El
+               const htmlEl: HTMLElement = telem.El
                htmlEl.scrollIntoView({
                   behavior: 'smooth',
                   block: 'end',
@@ -192,7 +191,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       // Prevent the default arrow-down behavior (e.g. scrolling the page)
       event.preventDefault()
 
-      let elements = this.els.map(({ Id, El }) => ({ Id, El }))
+      const elements = this.els.map(({ Id, El }) => ({ Id, El }))
 
       setTimeout(() => {
          if (this.CurrentListItem > 0) {
@@ -201,10 +200,10 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
             this.HoveredItem = listItem
 
             // Scroll element into view
-            let telem = elements.find((el) => el.Id === this.CurrentListItem)
+            const telem = elements.find((el) => el.Id === this.CurrentListItem)
 
             if (telem) {
-               let htmlEl: HTMLElement = telem.El
+               const htmlEl: HTMLElement = telem.El
                htmlEl.scrollIntoView({
                   behavior: 'smooth',
                   block: 'end',
@@ -227,8 +226,6 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       focusedElement.blur()
       this.closeDropdownMenu(this.PreviousValue)
    }
-   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   constructor() {}
 
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    ngOnInit() {
@@ -240,7 +237,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
    }
 
    async searchObjectForInput(input: Event | string) {
-      let inputString =
+      const inputString =
          typeof input === 'string'
             ? input
             : (input.target as HTMLInputElement).value
@@ -290,7 +287,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    requestComboboxData() {
       this.DisplayableDataset = []
-      this.OnDataRequest.emit({
+      this.onDataRequest.emit({
          SetDataI: (args: ComboboxSetDataArgsI<T>) => {
             this.setDataI(args)
          },
@@ -306,7 +303,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       this.Value.set(this.PreviousValue)
       this.SelectedItem = item
       // emit new item
-      this.OnItemSelect.emit(this.SelectedItem.ItemData)
+      this.onItemSelect.emit(this.SelectedItem.ItemData)
       this.closeDropdownMenu(this.Value())
    }
 

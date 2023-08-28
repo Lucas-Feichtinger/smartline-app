@@ -2,13 +2,13 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core'
 
 @Directive({
    standalone: true,
-   selector: 'input[numbers-only]',
+   selector: 'input[numbersOnly]',
 })
 export class NumberDirective {
    constructor(private elem: ElementRef) {}
 
-   @Input('numbers-only')
-   public length: number = 0
+   @Input('numbersOnly')
+   public length = 0
 
    // Restrict all input but numbers
    @HostListener('input', ['$event.target.value']) onInputChange(

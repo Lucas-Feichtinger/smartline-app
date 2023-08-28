@@ -6,7 +6,7 @@ import { Directive, Input, TemplateRef } from '@angular/core'
 })
 export class TemplateDirective {
    @Input('template')
-   public ID: string = ''
+   public ID = ''
 
    constructor(public template: TemplateRef<any>) {}
 }

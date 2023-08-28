@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, map } from 'rxjs'
+import { BehaviorSubject } from 'rxjs'
 import { ProductionItemIFace } from '../../shared'
 import { OrderInformationIFace } from '../../shared/interfaces/order-information.iface'
 import { uf_idGenerator } from 'src/app/util-functions/id-generator/id-generator.uf'
@@ -18,8 +18,6 @@ export class OrderService {
       null
    )
 
-   constructor() {}
-
    /**
     * @param item The item to be added to production.
     */
@@ -35,7 +33,7 @@ export class OrderService {
          // Generate new Order if the array was empty
          if (currentArray.length <= 0) {
             this.order$.next({
-               ID: (await uf_idGenerator({})).ID,
+               ID: (await uf_idGenerator()).ID,
                Workpieces: new BehaviorSubject<ProductionItemIFace[]>([]),
             })
          }

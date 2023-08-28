@@ -44,9 +44,9 @@ export class UserService {
    }
 
    public async loadUserFromSession() {
-      let userJson = await this.cacheSer.getJson('CurrentUser')
+      const userJson = await this.cacheSer.getJson('CurrentUser')
       if (userJson) {
-         let user = this.deSerialize(userJson) as UserIFace
+         const user = this.deSerialize(userJson) as UserIFace
          this.User$.next(user)
          this.User = user
       }

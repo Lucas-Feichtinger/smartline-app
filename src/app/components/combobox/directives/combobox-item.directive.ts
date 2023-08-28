@@ -1,6 +1,6 @@
 import { Directive, TemplateRef } from '@angular/core'
 
-var ItemCounter = 0
+let ItemCounter = 0
 
 @Directive({
    selector: 'combobox-item,[combobox-item]',

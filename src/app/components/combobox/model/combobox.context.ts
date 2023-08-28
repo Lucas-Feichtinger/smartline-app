@@ -16,7 +16,7 @@ export class ComboboxContext<T> {
    // }
 
    // --- ---
-   public statusInGrid: boolean = false
+   public statusInGrid = false
    private commandStack: GridCommandType[] = []
    public execCommand(cmd: GridCommandType) {
       if (this.statusInGrid) {

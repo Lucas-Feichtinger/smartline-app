@@ -8,10 +8,6 @@ import { CommonModule } from '@angular/common'
    templateUrl: './footer.component.html',
    styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
    public CurrentYear = new Date().getFullYear()
-
-   constructor() {}
-
-   async ngOnInit() {}
 }

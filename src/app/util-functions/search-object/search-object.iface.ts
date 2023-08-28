@@ -1,4 +1,4 @@
-export interface CLSearchObjectIFace<T> {
+export interface SearchObjectIFace<T> {
    ItemData: T
    Id: number
    Exclude: boolean

@@ -28,7 +28,7 @@
                   autocomplete="nope" />
                <button
                   class="p-inputgroup-addon"
-                  (click)="clearSelectedItem()">
+                  (click.keyup)="clearSelectedItem()">
                   <i class="fas fa-xmark"></i>
                </button>
             </div>
@@ -44,7 +44,7 @@
          <li
             *ngFor="let listitem of DisplayableDataset; let irow = index"
             [id]="listitem.Id"
-            (click)="selectDropdownItem(listitem)"
+            (click.keyup)="selectDropdownItem(listitem)"
             (mousedown)="onMenuMouseDown()"
             [class.selected-item]="listitem === SelectedItem"
             [class.hovered-item]="listitem === HoveredItem">

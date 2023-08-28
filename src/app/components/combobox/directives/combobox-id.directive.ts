@@ -5,7 +5,7 @@ import { Directive, Input, ElementRef } from '@angular/core'
    standalone: true,
 })
 export class ComboboxIdDirective {
-   @Input('id') Id: number = 0
+   @Input('id') Id = 0
    El: HTMLElement
 
    constructor(ref: ElementRef<HTMLElement>) {

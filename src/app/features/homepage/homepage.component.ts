@@ -1,4 +1,11 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core'
+import {
+   Component,
+   OnInit,
+   effect,
+   inject,
+   signal,
+   untracked,
+} from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterLinkWithHref, RouterOutlet } from '@angular/router'
 import { Title } from '@angular/platform-browser'
@@ -26,7 +33,7 @@ import { UserService, FakeBackendService } from 'src/app/services'
    templateUrl: './homepage.component.html',
    styleUrls: ['./homepage.component.scss'],
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit {
    private title = inject(Title)
    private formBuilder = inject(FormBuilder)
    private fakeBackendSer = inject(FakeBackendService)
@@ -73,7 +80,7 @@ export class HomepageComponent {
          return
       }
 
-      let resp = await this.fakeBackendSer.callLogin({
+      const resp = await this.fakeBackendSer.callLogin({
          Username: userId,
          Password: password,
       })

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core'
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
 import { LayoutComponent } from './components/layout/layout.component'
-import { HomepageComponent, ProductionManagementComponent } from './features'
 
 const routes: Routes = [
    {

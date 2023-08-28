@@ -7,8 +7,6 @@ import { ProductionItemIFace } from '../interfaces'
    providedIn: 'root',
 })
 export class OrderStoreService {
-   constructor() {}
-
    /**
     *
     * @param orders : Partial<OrderInformationIFace>[]

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core'
+import { Component, OnInit, computed, inject, signal } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import {
@@ -29,7 +29,7 @@ import { Title } from '@angular/platform-browser'
    templateUrl: './order-item.component.html',
    styleUrls: ['./order-item.component.scss'],
 })
-export class OrderItemComponent {
+export class OrderItemComponent implements OnInit {
    // Services
    public orderSer = inject(OrderService)
    public orderStoreSer = inject(OrderStoreService)
@@ -51,7 +51,7 @@ export class OrderItemComponent {
    // Used to display the amount of currently selected Workpieces
    public WorkpieceAmount$ = computed(() => {
       return this.selectedWorkpiece$.pipe(
-         map((workpieces) => {
+         map(() => {
             return `At Workpiece ${this.orderSer.getIndex().valueOf() + 1}/${
                this.orderSer.productionItems$.getValue().length
             }`
@@ -88,8 +88,6 @@ export class OrderItemComponent {
       })
    )
 
-   constructor() {}
-
    ngOnInit() {
       this.title.setTitle('SmartLine - Order')
    }
@@ -108,7 +106,7 @@ export class OrderItemComponent {
       const subscription = this.order$.subscribe(async (order) => {
          // Get List of Orders from Storage
          const orderStr = (await this.cacheSer.getStringLocal('Order')) || ''
-         let orders: Partial<OrderInformationIFace>[] =
+         const orders: Partial<OrderInformationIFace>[] =
             this.orderStoreSer.deserializeOrders(orderStr) || []
 
          // Add new order to List

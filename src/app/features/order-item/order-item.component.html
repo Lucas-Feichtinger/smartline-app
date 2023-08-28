@@ -3,7 +3,7 @@
       <div class="card">
          <div class="card-body">
             <h3 class="card-title">Create a new Oder of Items to Produce</h3>
-            <combobox
+            <app-combobox
                [context]="ComboboxContext"
                (onItemSelect)="selectWorkpieceCB($event)"
                (onDataRequest)="requestWorkpieceCB($event)"
@@ -19,7 +19,7 @@
                      <p><b>Workstation:</b> {{ row.Workstation }}</p>
                   </div>
                </ng-template>
-            </combobox>
+            </app-combobox>
          </div>
          <button
             class="main-btn"
@@ -52,7 +52,7 @@
                      <input
                         id="order-plz"
                         type="text"
-                        [numbers-only]="6"
+                        [numbersOnly]="6"
                         class="main-input"
                         [(ngModel)]="Order.OrderPLZ" />
                   </div>
