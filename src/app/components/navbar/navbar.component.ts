@@ -4,7 +4,7 @@ import { RouterLinkActive, RouterLink } from '@angular/router'
 import { UserService } from 'src/app/services'
 import { of, switchMap } from 'rxjs'
 import { FormsModule } from '@angular/forms'
-import { UserRights } from './enums/switch-direction.enum'
+import { UserRightsEnum } from './enums/switch-direction.enum'
 
 @Component({
    standalone: true,
@@ -17,17 +17,17 @@ export class NavbarComponent {
    // Services
    public userSer = inject(UserService)
 
-   public UserRight = UserRights
+   public UserRight = UserRightsEnum
 
    public Allowance$ = this.userSer.User$.pipe(
       switchMap((user) => {
          const role = user?.Role ?? ''
          if (role === 'admin') {
-            return of(UserRights.Admin)
+            return of(this.UserRight.Admin)
          } else if (role === 'user') {
-            return of(UserRights.User)
+            return of(this.UserRight.User)
          } else {
-            return of(UserRights.None)
+            return of(this.UserRight.None)
          }
       })
    )
