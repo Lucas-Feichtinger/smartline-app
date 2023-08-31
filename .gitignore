@@ -14,6 +14,8 @@ yarn-error.log
 # IDEs and editors
 .idea/
 .project
+.github/workflows/*.*
+.github/workflows/*
 .github/*
 .classpath
 .c9/
