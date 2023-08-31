@@ -1,13 +1,18 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { BehaviorSubject } from 'rxjs'
 import { ProductionItemIFace } from '../../shared'
 import { OrderInformationIFace } from '../../shared/interfaces/order-information.iface'
 import { uf_idGenerator } from 'src/app/util-functions/id-generator/id-generator.uf'
+import { CacheService } from 'src/app/services'
+import { OrderStoreService } from '../../shared/data/order-storage.service'
 
 @Injectable({
    providedIn: 'root',
 })
 export class OrderService {
+   public orderStoreSer = inject(OrderStoreService)
+   public cacheSer = inject(CacheService)
+
    public productionItems$ = new BehaviorSubject<ProductionItemIFace[]>([])
 
    public order$ = new BehaviorSubject<Partial<OrderInformationIFace> | null>(
@@ -124,5 +129,20 @@ export class OrderService {
       }
 
       return this.productionItems$.getValue().indexOf(selectedWorkpiece)
+   }
+
+   public async storeOrder(order: Partial<OrderInformationIFace>) {
+      // Get List of Orders from Storage
+      const orderStr = (await this.cacheSer.getStringLocal('Order')) || ''
+      const orders: Partial<OrderInformationIFace>[] =
+         this.orderStoreSer.deserializeOrders(orderStr) || []
+
+      // Add new order to List
+      if (order) {
+         orders.push(order)
+      }
+      // Push updated List Storage
+      this.cacheSer.setStringLocal('Order', JSON.stringify(orders))
+      this.clearOrders()
    }
 }

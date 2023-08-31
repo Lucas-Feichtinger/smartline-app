@@ -5,9 +5,9 @@
             <h3 class="card-title">Create a new Oder of Items to Produce</h3>
             <app-combobox
                [context]="ComboboxContext"
-               (onItemSelect)="selectWorkpieceCB($event)"
-               (onDataRequest)="requestWorkpieceCB($event)"
-               (onClear)="clearWorkpieceCB()"
+               (itemSelectEvent)="selectWorkpieceCB($event)"
+               (dataRequestEvent)="requestWorkpieceCB($event)"
+               (clearValueEvent)="clearWorkpieceCB()"
                [value]="WorkpieceValue()"
                [clearSelection]="true"
                placeholder="Select workpiece">
@@ -104,8 +104,10 @@
                               class="main-btn small"
                               (click)="orderSer.lastWorkpiece()"
                               *ngIf="
-                                 (switchDirection$() | async) === 2 ||
-                                 (switchDirection$() | async) === 3
+                                 (switchDirection$() | async) ===
+                                    SwitchDirection.LeftAvailable ||
+                                 (switchDirection$() | async) ===
+                                    SwitchDirection.BothAvailable
                               ">
                               <i class="fa-solid fa-arrow-left"></i>
                            </button>
@@ -118,8 +120,10 @@
                               class="main-btn small"
                               (click)="orderSer.nextWorkpiece()"
                               *ngIf="
-                                 (switchDirection$() | async) === 1 ||
-                                 (switchDirection$() | async) === 3
+                                 (switchDirection$() | async) ===
+                                    SwitchDirection.RightAvailable ||
+                                 (switchDirection$() | async) ===
+                                    SwitchDirection.BothAvailable
                               ">
                               <i class="fa-solid fa-arrow-right"></i>
                            </button>

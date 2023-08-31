@@ -8,13 +8,16 @@
       </li>
       <!-- "Greater than" opperand is not working here -->
       <li
-         *ngIf="(Allowance$() | async) === 2"
+         *ngIf="(Allowance$ | async) === UserRight.Admin"
          routerLink="/production-management"
          routerLinkActive="active-link">
          <a>Production Management</a>
       </li>
       <li
-         *ngIf="(Allowance$() | async) === 2 || (Allowance$() | async) === 1"
+         *ngIf="
+            (Allowance$ | async) === UserRight.Admin ||
+            (Allowance$ | async) === UserRight.User
+         "
          routerLink="/order-item"
          routerLinkActive="active-link">
          <a>Order Item</a>

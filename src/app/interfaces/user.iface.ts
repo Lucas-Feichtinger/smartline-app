@@ -4,5 +4,5 @@ export interface UserIFace {
    Username: string
    Role: UserRoleType
 
-   Token: string
+   Token: string | undefined
 }

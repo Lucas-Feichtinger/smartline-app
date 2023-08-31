@@ -1,9 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterLinkActive, RouterLink } from '@angular/router'
 import { UserService } from 'src/app/services'
-import { firstValueFrom, map, of } from 'rxjs'
+import { of, switchMap } from 'rxjs'
 import { FormsModule } from '@angular/forms'
+import { UserRights } from './enums/switch-direction.enum'
 
 @Component({
    standalone: true,
@@ -16,17 +17,18 @@ export class NavbarComponent {
    // Services
    public userSer = inject(UserService)
 
-   public Allowance$ = computed(() => {
-      return this.userSer.User$.pipe(
-         map((user) => {
-            const role = user?.Role ?? ''
-            if (role === 'admin') {
-               return 2
-            } else if (role === 'user') {
-               return 1
-            }
-            return 0
-         })
-      )
-   })
+   public UserRight = UserRights
+
+   public Allowance$ = this.userSer.User$.pipe(
+      switchMap((user) => {
+         const role = user?.Role ?? ''
+         if (role === 'admin') {
+            return of(UserRights.Admin)
+         } else if (role === 'user') {
+            return of(UserRights.User)
+         } else {
+            return of(UserRights.None)
+         }
+      })
+   )
 }

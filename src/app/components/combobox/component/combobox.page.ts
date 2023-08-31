@@ -1,5 +1,6 @@
 import {
    AfterContentInit,
+   AfterViewInit,
    Component,
    ContentChild,
    ContentChildren,
@@ -36,7 +37,9 @@ import { uf_searchObject } from 'src/app/util-functions/search-object/search-obj
    standalone: true,
    imports: [ComboboxIdDirective, NgTemplateOutlet, CommonModule],
 })
-export class ComboboxComponent<T> implements OnInit, AfterContentInit {
+export class ComboboxComponent<T>
+   implements OnInit, AfterContentInit, AfterViewInit
+{
    public IsMenuInteracting = false
    // Provides limitation for certain functions only for the current Comboboxes menu
    // if multiple Comboboxes are on one site
@@ -120,11 +123,11 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       }, 0)
    }
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output() onDataRequest = new EventEmitter<ComboboxDataRequestIFace<T>>()
+   @Output() dataRequestEvent = new EventEmitter<ComboboxDataRequestIFace<T>>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output() onItemSelect = new EventEmitter<T>()
+   @Output() itemSelectEvent = new EventEmitter<T>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   @Output() OnClear = new EventEmitter<void>()
+   @Output() clearValueEvent = new EventEmitter<void>()
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    @ContentChild(ComboboxItemDirective) ComboboxItem!: ComboboxItemDirective
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -287,7 +290,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    requestComboboxData() {
       this.DisplayableDataset = []
-      this.onDataRequest.emit({
+      this.dataRequestEvent.emit({
          SetDataI: (args: ComboboxSetDataArgsI<T>) => {
             this.setDataI(args)
          },
@@ -303,7 +306,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
       this.Value.set(this.PreviousValue)
       this.SelectedItem = item
       // emit new item
-      this.onItemSelect.emit(this.SelectedItem.ItemData)
+      this.itemSelectEvent.emit(this.SelectedItem.ItemData)
       this.closeDropdownMenu(this.Value())
    }
 
@@ -313,7 +316,7 @@ export class ComboboxComponent<T> implements OnInit, AfterContentInit {
          this.PreviousValue = ''
          this.SelectedItem = null
          this.Value.set('')
-         this.OnClear.emit(undefined)
+         this.clearValueEvent.emit(undefined)
          this.closeDropdownMenu(this.PreviousValue)
       }
    }

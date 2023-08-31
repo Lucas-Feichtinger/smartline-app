@@ -11,10 +11,8 @@ import { NumberDirective, ProductionItemIFace } from '../shared'
 import { MockupData } from './moqup-data/moq-data.const'
 import { OrderService } from './data'
 import { firstValueFrom, map } from 'rxjs'
-import { CacheService } from 'src/app/services/cache/cache.service'
-import { OrderInformationIFace } from '../shared/interfaces/order-information.iface'
-import { OrderStoreService } from '../shared/data/order-storage.service'
 import { Title } from '@angular/platform-browser'
+import { SwitchDirections } from './enums/switch-direction.enum'
 
 @Component({
    selector: 'app-order-item',
@@ -32,10 +30,9 @@ import { Title } from '@angular/platform-browser'
 export class OrderItemComponent implements OnInit {
    // Services
    public orderSer = inject(OrderService)
-   public orderStoreSer = inject(OrderStoreService)
-   public cacheSer = inject(CacheService)
    private title = inject(Title)
 
+   public SwitchDirection = SwitchDirections
    // Combobox Component
    public ComboboxContext = new ComboboxContext<ProductionItemIFace>()
    public WorkpieceValue = signal('')
@@ -67,17 +64,13 @@ export class OrderItemComponent implements OnInit {
             const position = this.orderSer.getIndex().valueOf()
 
             if (length === 1) {
-               // no directions
-               return 0
+               return this.SwitchDirection.NoneAvailable
             } else if (position === length - 1) {
-               // switch left available
-               return 2
+               return this.SwitchDirection.LeftAvailable
             } else if (position === 0) {
-               // switch right available
-               return 1
+               return this.SwitchDirection.RightAvailable
             }
-            // Both directions
-            return 3
+            return this.SwitchDirection.BothAvailable
          })
       )
    })
@@ -104,18 +97,9 @@ export class OrderItemComponent implements OnInit {
 
    public async createOrder() {
       const subscription = this.order$.subscribe(async (order) => {
-         // Get List of Orders from Storage
-         const orderStr = (await this.cacheSer.getStringLocal('Order')) || ''
-         const orders: Partial<OrderInformationIFace>[] =
-            this.orderStoreSer.deserializeOrders(orderStr) || []
-
-         // Add new order to List
          if (order) {
-            orders.push(order)
+            this.orderSer.storeOrder(order)
          }
-         // Push updated List Storage
-         this.cacheSer.setStringLocal('Order', JSON.stringify(orders))
-         this.orderSer.clearOrders()
       })
 
       // To unsubscribe, call unsubscribe when needed (e.g., in ngOnDestroy)

@@ -11,12 +11,16 @@ export class UserService {
    // Services
    public cacheSer = inject(CacheService)
 
-   public User: UserIFace = {} as UserIFace
+   public User: UserIFace | null = null
    public User$ = new BehaviorSubject<UserIFace>({} as UserIFace)
 
-   public async getUser(): Promise<UserIFace> {
+   public async getUser(): Promise<UserIFace | null> {
       await this.loadUserFromSession()
-      return this.User
+
+      if (this.User) {
+         return this.User
+      }
+      return null
    }
 
    public setUser(user: UserIFace) {
@@ -32,15 +36,17 @@ export class UserService {
    }
 
    public getLoginState(): boolean {
-      if (this.User?.Token?.length > 0) {
+      if (this.User && this.User?.Token) {
          return true
       }
       return false
    }
 
    public storeUserToSession() {
-      const user = this.serialize(this.User)
-      this.cacheSer.setJson('CurrentUser', user)
+      if (this.User) {
+         const user = this.serialize(this.User)
+         this.cacheSer.setJson('CurrentUser', user)
+      }
    }
 
    public async loadUserFromSession() {
