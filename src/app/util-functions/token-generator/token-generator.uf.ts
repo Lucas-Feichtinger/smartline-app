@@ -14,8 +14,6 @@ export async function uf_tokenGenerator(
       token += characters[randomIndex]
    }
 
-   console.log(token)
-
    return {
       Token: token,
    }
